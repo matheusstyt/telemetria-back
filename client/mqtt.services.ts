@@ -8,7 +8,7 @@ import { ICompany } from "./dto";
 const mqtt = require('mqtt'); 
 
 @Injectable()
-export class MqttService {
+export class MQTTServices {
 
     private companies: ICompany[] = [];
 
@@ -20,7 +20,9 @@ export class MqttService {
         private devicesServices: DeviceServices,
         private companiesServices: CompaniesServices
 
-    ) { this.checkUpdatedCompanies() }
+    ) { 
+        //this.checkUpdatedCompanies();
+    }
 
      async checkUpdatedCompanies() {
         await this.companiesServices.list()
@@ -31,33 +33,28 @@ export class MqttService {
                 }
             };
         });
-         this.listenToCompanyBrokers();
+
      }
-     getListBroker() {
-         return this.getCompanies();
-        }
-    
-        async listenToCompanyBrokers() {
-            const companies = this.getCompanies();
-            for (const company of companies) {
-                await this.connectAndListen(company.id, company.broker, company.topicos);
-            }
-    }
 
     connectAndListen(companyId: string, broker: string, topicos: string[]) {
         const client = mqtt.connect(broker);
 
         client.on('connect', () => {
-            console.log(`Cliente MQTT conectado para a empresa ${broker}`);
+            console.log(`Conectado ao broker ${broker}`);
         });
-        client.on('disconnect', () => {
-            console.log(`Cliente MQTT disconectado para a empresa ${broker}`)
-        })
+        client.on('reconnect', () => {
+            console.log(`Tentando reconectar ao broker ${broker}`);
+        });
+
+        client.on('close', () => {
+            console.log(`Conexão fechada com o broker ${broker}`);
+        });
+
         for( let topico of topicos ) { client.subscribe(topico) }
 
         client.on('message', async (topic, message) => {
             console.log(`Mensagem recebida para a empresa ${companyId} no tópico ${topic}:`, message.toString());
-          //  console.log(this.mqttClients)
+
             if(topic){
     
                 try {
@@ -85,20 +82,28 @@ export class MqttService {
                 }
           }
         });
-
         this.mqttClients[companyId] = client;  // Armazena o cliente MQTT para a empresa
     }
     connectToNewBroker(companyId: string, broker: string, topicos: string[]) {
         this.connectAndListen(companyId, broker, topicos);
     }
 
-    getCompanies(): ICompany[] {
-        return this.companies;
+    getMqttClients(): any{
+        return this.mqttClients;
     }
 
     setCompany(company: ICompany): void {
         this.companies.push(company);
     }
-
+    removeClient(id: string){
+        if (this.mqttClients.hasOwnProperty(id)) {
+            delete this.mqttClients[id]; // Isso remove o cliente MQTT com base no companyId
+            console.log(`Cliente MQTT removido para a empresa ${id}`);
+            return true;
+        } else {
+            console.log(`Cliente MQTT não encontrado para a empresa ${id}`);
+            return false;
+        }
+    }
 }
 

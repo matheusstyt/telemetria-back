@@ -13,14 +13,14 @@ import { CompaniesEntity } from "./companies.entity";
 import { CompaniesDTO, } from "./dto/Companies.dto";
 import { v4 as uuid } from "uuid";
 import { CompaniesServices } from "./companies.services";
-import { MqttService } from "client/mqtt.services";
+import { MQTTServices } from "client/mqtt.services";
 
 @Controller("/companies")
 export class CompaniesController {
 
     constructor ( 
         private CompaniesServices: CompaniesServices,
-        private mqttServices: MqttService
+        private mqttServices: MQTTServices
         ) {}
 
     @Post()

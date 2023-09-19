@@ -26,6 +26,7 @@ export class CompaniesServices {
             return {
                 id:company.id, 
                 broker: company.url,
+                descricao: company.descricao,
                 topicos: company.devices.map((device: DevicesEntity) => device.topico)
             }})
         return list;

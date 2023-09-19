@@ -1,5 +1,7 @@
 export interface ICompany {
-    id: string;
-    broker: string;
-    topicos: string[]
+    id?: string;
+    descricao: string;
+    broker?: string;
+    status?: boolean;
+    topicos?: string[]
 }

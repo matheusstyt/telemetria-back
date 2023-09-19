@@ -6,7 +6,7 @@ import { CompaniesEntity } from "./companies.entity";
 import { CompaniesController } from "./companies.controller";
 import { DevicesEntity } from "src/devices/devices.entity";
 import { DeviceServices } from "src/devices/devices.services";
-import { MqttService } from "client/mqtt.services";
+import { MQTTServices } from "client/mqtt.services";
 import { ValueDeviceServices } from "src/valuesDevices/valuesDevices.services";
 import { ValuesDevicesEntity } from "src/valuesDevices/valuesDevices.entity";
 @Module({
@@ -15,7 +15,7 @@ import { ValuesDevicesEntity } from "src/valuesDevices/valuesDevices.entity";
     providers: [
         CompaniesServices, 
         DeviceServices, 
-        MqttService,
+        MQTTServices,
         ValueDeviceServices
     ]
 })
