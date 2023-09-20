@@ -17,17 +17,17 @@ export class CompaniesServices {
     }
 
     async findOne(id : string): Promise<CompaniesEntity | undefined> {
-        return this.companiesRepository.findOne({where: { id }, relations: ['devices', "devices.values"]});
+        return this.companiesRepository.findOne({where: { id }, relations: ['devices']});
     }
 
     async list() {
-        const companiesBanco = await this.companiesRepository.find({relations: ["devices", "devices.values"]});
+        const companiesBanco = await this.companiesRepository.find({relations: ["devices"]});
         let list = companiesBanco.map((company: CompaniesEntity) => {
             return {
                 id:company.id, 
                 broker: company.url,
                 descricao: company.descricao,
-                topicos: company.devices.map((device: DevicesEntity) => device.topico)
+                devices: company.devices
             }})
         return list;
     }
