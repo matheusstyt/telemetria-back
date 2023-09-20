@@ -2,8 +2,6 @@ import { Injectable} from "@nestjs/common";
 import { InjectRepository } from "@nestjs/typeorm";
 import { Repository } from "typeorm";
 import { CompaniesEntity } from "./companies.entity";
-import { CompaniesDTO } from "./dto/Companies.dto";
-import { DevicesEntity } from "src/devices/devices.entity";
 
 @Injectable()
 export class CompaniesServices {

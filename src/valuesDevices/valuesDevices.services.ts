@@ -11,8 +11,8 @@ export class ValueDeviceServices {
         private readonly valuesDevicesRepository: Repository<ValuesDevicesEntity>
     ) {}
 
-    async save(molde : ValuesDevicesEntity) {
-        await this.valuesDevicesRepository.save(molde);
+    async save(value : ValuesDevicesEntity) {
+        await this.valuesDevicesRepository.save(value);
     }
 
     async findOne(id : string): Promise<ValuesDevicesEntity | undefined> {

@@ -19,7 +19,7 @@ import { MQTTServices } from "client/mqtt.services";
 export class CompaniesController {
 
     constructor ( 
-        private CompaniesServices: CompaniesServices,
+        private companiesServices: CompaniesServices,
         private mqttServices: MQTTServices
         ) {}
 
@@ -31,7 +31,7 @@ export class CompaniesController {
         companiesEntity.descricao = data.descricao;
         companiesEntity.url = data.url;
         try {
-            await this.CompaniesServices.save(companiesEntity);
+            await this.companiesServices.save(companiesEntity);
             this.mqttServices.checkUpdatedCompanies();
         } catch (error) {
             
@@ -43,7 +43,7 @@ export class CompaniesController {
     }
     @Get(":id") // Captura o parâmetro 'id' da rota
     async getCompanies(@Param("id") id: string) {
-        const company = await this.CompaniesServices.findOne(id);
+        const company = await this.companiesServices.findOne(id);
 
         if(!company) throw new NotFoundException("Company não encontrado")
         
@@ -52,19 +52,19 @@ export class CompaniesController {
 
     @Get()
     async list() {
-        const companiesBanco = await this.CompaniesServices.list();
+        const companiesBanco = await this.companiesServices.list();
         return  {list : companiesBanco};
     }
 
     @Put('/:id') // Captura o parâmetro 'id' da rota
     async updateCompanies(@Param('id') id: string, @Body() newData: CompaniesEntity) {
-        const novoCompany = await this.CompaniesServices.update(id, newData);
+        const novoCompany = await this.companiesServices.update(id, newData);
         return { status: "Alterado com sucesso!", data: novoCompany };
     }
 
     @Delete('/:id') // Captura o parâmetro 'id' da rota
     async deleteCompanies(@Param('id') id: string) {
-        const deleteCompany = await this.CompaniesServices.delete(id);
+        const deleteCompany = await this.companiesServices.delete(id);
         return { status: "Deletado com sucesso!", data: deleteCompany };
     }
 

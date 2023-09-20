@@ -13,13 +13,10 @@ export class CompaniesEntity {
     @Column({name: "url", length: 255, nullable: true})
     url?: string;
 
-    // @Column({name: "status", default: false})
-    // status?: boolean;
-
     @OneToMany(() => DevicesEntity, device => device.company, {
-        eager: true,
-        cascade: true,
-        onDelete: 'CASCADE',
-      })
-      devices: DevicesEntity[];
+      eager: true,
+      cascade: true,
+      onDelete: 'CASCADE',
+    })
+    devices: DevicesEntity[];
 }

@@ -10,8 +10,6 @@ const mqtt = require('mqtt');
 @Injectable()
 export class MQTTServices {
 
-    private companies: ICompany[] = [];
-
     private mqttClients: { [companyId: string]: ICompany } = {};  // Armazena os clientes MQTT por empresa
 
     constructor( 
@@ -21,7 +19,7 @@ export class MQTTServices {
         private companiesServices: CompaniesServices
 
     ) { 
-        //this.checkUpdatedCompanies();
+    
     }
 
      async checkUpdatedCompanies() {
@@ -90,10 +88,6 @@ export class MQTTServices {
 
     getMqttClients(): any{
         return this.mqttClients;
-    }
-
-    setCompany(company: ICompany): void {
-        this.companies.push(company);
     }
     removeClient(id: string){
         if (this.mqttClients.hasOwnProperty(id)) {
