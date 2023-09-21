@@ -33,11 +33,7 @@ export class MQTTController {
 
         try {
             await this.mqttServices
-            .connectToNewBroker (
-                companyExistente.id,
-                companyExistente.url,
-                companyExistente.devices.map((device: DevicesEntity) => device.topico)
-            );
+            .connectToNewBroker ( companyExistente.id );
         } catch (error) {
             
         }
@@ -95,7 +91,7 @@ export class MQTTController {
     @UseGuards(AuthGuard)   
     @Delete('/:id') // Captura o parâmetro 'id' da rota
     async deleteLicenca(@Param('id') id: string) {
-        const removed = this.mqttServices.removeClient(id);
+        const removed = this.mqttServices.removeListen(id);
 
         if(!removed) throw new NotFoundException("Company não encontrado na lista de serviços.")
         else return {status: "Removido com sucesso!"}

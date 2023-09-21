@@ -8,9 +8,10 @@ import { ValuesDevicesEntity } from "src/valuesDevices/valuesDevices.entity";
 import { ValueDeviceServices } from "src/valuesDevices/valuesDevices.services";
 import { CompaniesServices } from "src/companies/companies.services";
 import { CompaniesEntity } from "src/companies/companies.entity";
+import { MQTTServices } from "client/mqtt.services";
 @Module({
     imports: [TypeOrmModule.forFeature([DevicesEntity, ValuesDevicesEntity, CompaniesEntity])],
     controllers: [DeviceController],
-    providers: [DeviceServices,  ValueDeviceServices, CompaniesServices]
+    providers: [DeviceServices,  ValueDeviceServices, CompaniesServices, MQTTServices]
 })
 export class DevicesModule {};

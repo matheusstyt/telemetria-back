@@ -15,13 +15,15 @@ import { DevicesEntity } from "./devices.entity";
 import { DevicesDTO, } from "./dto/devices.dto";
 import { v4 as uuid } from "uuid";
 import { CompaniesServices } from "src/companies/companies.services";
+import { MQTTServices } from "client/mqtt.services";
 
 @Controller("/devices")
 export class DeviceController {
 
     constructor ( 
         private devicesServices: DeviceServices,
-        private companiesServices: CompaniesServices
+        private companiesServices: CompaniesServices,
+        private mqttServices: MQTTServices
         ) {}
 
     @Post()
@@ -41,7 +43,9 @@ export class DeviceController {
             company.devices.push(devicesEntity)
 
             await this.companiesServices.save(company);
-
+            
+            // reiniciar o "serviço" desse broker com novo tópico subscrito
+            this.mqttServices.reloadListenWithNewTopic(company.id);
         }else{
             throw new ForbiddenException("ID de identificação inválido!");
         }
