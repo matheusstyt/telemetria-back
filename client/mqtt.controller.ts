@@ -6,13 +6,15 @@ import {
     Delete, 
     Param, 
     Body, 
-    NotFoundException 
+    NotFoundException, 
+    UseGuards
 } from "@nestjs/common";
 
 import { MQTTServices } from "client/mqtt.services";
 import { ICompany } from "./dto";
 import { CompaniesServices } from "src/companies/companies.services";
 import { DevicesEntity } from "src/devices/devices.entity";
+import { AuthGuard } from "src/authentication/authentication.guard";
 
 @Controller("/mqttLicence")
 export class MQTTController {
@@ -22,6 +24,7 @@ export class MQTTController {
         private companiesServices: CompaniesServices
         ) {}
 
+    @UseGuards(AuthGuard)    
     @Post()
     async createLicenca(@Body() data: ICompany) {
         const companyExistente = await this.companiesServices.findOne(data.id);
@@ -40,6 +43,8 @@ export class MQTTController {
         }
         return { status: "Registrado com sucesso!", data: companyExistente};
     }
+
+    @UseGuards(AuthGuard)   
     @Get(":id") // Captura o parâmetro 'id' da rota
     async getLicencas(@Param("id") id: string) {
 
@@ -56,6 +61,7 @@ export class MQTTController {
         }
     }
 
+    @UseGuards(AuthGuard)   
     @Get()
     async list() {
         const mqttClients = this.mqttServices.getMqttClients();
@@ -86,12 +92,7 @@ export class MQTTController {
         return  {list : companiesWithStatus};
     }
 
-    // @Put('/:id') // Captura o parâmetro 'id' da rota
-    // async updateCompanies(@Param('id') id: string, @Body() newData: CompaniesEntity) {
-    //     const novoCompany = await this.mqttServices.update(id, newData);
-    //     return { status: "Alterado com sucesso!", data: novoCompany };
-    // }
-
+    @UseGuards(AuthGuard)   
     @Delete('/:id') // Captura o parâmetro 'id' da rota
     async deleteLicenca(@Param('id') id: string) {
         const removed = this.mqttServices.removeClient(id);

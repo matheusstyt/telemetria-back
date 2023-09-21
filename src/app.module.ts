@@ -8,11 +8,16 @@ import { CompaniesModule } from './companies/companies.module';
 import { DevicesModule } from './devices/devices.module';
 import { ValuesDeviceModule } from './valuesDevices/valuesDevices.module';
 import { MqttModule } from 'client/mqtt.module';
-import { ListCompaniesService } from 'client/list.companies.services';
+import { UserModule } from './users/users.module';
+import { AuthModule } from './authentication/authentication.module';
+import { APP_GUARD } from '@nestjs/core';
+import { AuthGuard } from './authentication/authentication.guard';
 
 @Module({
   imports: [
+    AuthModule,
     MqttModule,
+    UserModule,
     DevicesModule,
     CompaniesModule,
     ValuesDeviceModule,
@@ -22,6 +27,6 @@ import { ListCompaniesService } from 'client/list.companies.services';
       inject: [PostgresConfigService]
     })
   ],
-  providers: [AppService,],
+  providers: [AppService, {provide: APP_GUARD, useClass: AuthGuard}],
 })
 export class AppModule {}
