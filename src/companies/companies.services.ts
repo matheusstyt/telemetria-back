@@ -14,8 +14,12 @@ export class CompaniesServices {
         await this.companiesRepository.save(company);
     }
 
+    async findMatricula(descricao : string): Promise<CompaniesEntity | undefined> {
+        return this.companiesRepository.findOne({where: { descricao }, relations: ['devices', 'users']});
+    }
+
     async findOne(id : string): Promise<CompaniesEntity | undefined> {
-        return this.companiesRepository.findOne({where: { id }, relations: ['devices']});
+        return this.companiesRepository.findOne({where: { id }, relations: ['devices', 'users']});
     }
 
     async list() {

@@ -1,5 +1,4 @@
 import { IsString, IsNotEmpty, IsOptional, IsNumber } from "class-validator";
-import { DevicesEntity } from "src/devices/devices.entity";
 
 export class ValueDevicesDTO {
 

@@ -1,6 +1,7 @@
 
 import { DevicesEntity } from "src/devices/devices.entity";
-import { Entity, PrimaryGeneratedColumn, OneToOne, JoinColumn, ManyToOne, OneToMany, Column } from "typeorm";
+import { UserEntity } from "src/users/users.entity";
+import { Entity, PrimaryGeneratedColumn, OneToMany, Column } from "typeorm";
 
 @Entity({name: "companies"})
 export class CompaniesEntity {
@@ -19,4 +20,11 @@ export class CompaniesEntity {
       onDelete: 'CASCADE',
     })
     devices: DevicesEntity[];
+
+    @OneToMany(() => UserEntity, user => user.company, {
+      eager: false,
+      cascade: true,
+      onDelete: 'CASCADE',
+    })
+    users: UserEntity[];
 }

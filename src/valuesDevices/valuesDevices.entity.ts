@@ -1,5 +1,5 @@
 import { DevicesEntity } from "src/devices/devices.entity";
-import { Entity, PrimaryGeneratedColumn, OneToOne, JoinColumn, ManyToOne, OneToMany, Column, ManyToMany, JoinTable, CreateDateColumn } from "typeorm";
+import { Entity, PrimaryGeneratedColumn, ManyToOne, Column, CreateDateColumn } from "typeorm";
 
 @Entity({name: "values_devices"})
 export class ValuesDevicesEntity {
